@@ -4,28 +4,48 @@
 
 var tela = document.getElementById("tela");
 var c = tela.getContext("2d");
-var corAlvo = "white";
+var corAlvo="white";
 
-var circulo = function(x,y,raio){
-	c.strokeStyle = "blue";
+var limpa = function(){
+	c.clearRect(0,0,600,400);
+};
+
+
+var circulo = function(x,y,raio,cor){
+	c.strokeStyle = cor;
 	c.beginPath();
 	c.arc(x,y,raio,0,2*Math.PI);
 	c.stroke();
 }
 
-var cor = function(cor){
-	corAlvo = cor;
-}
 
-
-var desenhaAlvo = function(x,y){
+var desenhaAlvo = function(x,y,cor){
 	var raio = 40;
-	cor("white");
-	circulo(x,y,raio);
-	
-	
+	circulo(x,y,raio,"white");
+	circulo(x,y,raio-10,"red");
+	circulo(x,y,raio-20,"white");
+	circulo(x,y,raio-30,"red");
+};
+
+var alvoX;
+var alvoY;
+
+var sorteia = function(maximo){
+	var numero = Math.random() * maximo;
+	return numero;
 }
 
 
+var desenha = function(){
+	limpa();
+	c.fillStyle = "green";
+	c.fillRect(0,0,600,400);
+	alvoX = sorteia(600);
+	alvoY = sorteia(400);
+	desenhaAlvo(alvoX, alvoY);
+};
+
+
+setInterval(desenha,1000);
 
 </script>
