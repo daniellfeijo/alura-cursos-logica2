@@ -4,34 +4,42 @@
 
 var tela = document.getElementById("tela");
 var c = tela.getContext("2d");
-var corAlvo="white";
+var corAlvo;
 
 var limpa = function(){
 	c.clearRect(0,0,600,400);
 };
 
 
-var circulo = function(x,y,raio,cor){
-	c.strokeStyle = cor;
+var circulo = function(x,y,raio){
+	c.fillStyle = corAlvo;
 	c.beginPath();
 	c.arc(x,y,raio,0,2*Math.PI);
-	c.stroke();
+	c.fill();
+}
+
+var cor = function(corEscolhida){
+	corAlvo = corEscolhida;
 }
 
 
-var desenhaAlvo = function(x,y,cor){
+var desenhaAlvo = function(x,y){
 	var raio = 40;
-	circulo(x,y,raio,"white");
-	circulo(x,y,raio-10,"red");
-	circulo(x,y,raio-20,"white");
-	circulo(x,y,raio-30,"red");
+	cor("white");
+	circulo(x,y,raio);
+	cor("red");
+	circulo(x,y,raio-10);
+	cor("white");
+	circulo(x,y,raio-20);
+	cor("red");
+	circulo(x,y,raio-30);
 };
 
 var alvoX;
 var alvoY;
 
 var sorteia = function(maximo){
-	var numero = Math.random() * maximo;
+	var numero = Math.round(Math.random() * maximo);
 	return numero;
 }
 
@@ -43,9 +51,34 @@ var desenha = function(){
 	alvoX = sorteia(600);
 	alvoY = sorteia(400);
 	desenhaAlvo(alvoX, alvoY);
+	console.log("posição do alvo: " + alvoX + "," + alvoY);
 };
 
 
-setInterval(desenha,1000);
+setInterval(desenha,10000);
+
+
+var atira = function(evento){
+	var x = evento.pageX - tela.offsetLeft;
+	var y = evento.pageY - tela.offsetTop;
+	
+	c.fillStyle = "red";
+	c.beginPath();
+	c.arc(x,y,10,0,2*3.14);
+	c.fill();
+	
+	if((x==alvoX) && (y==alvoY)){
+		alert ("acertou!");
+	}
+	
+	console.log("posição do clique: " + x + "," + y);
+	
+};
+
+
+
+tela.onclick=atira;
+
+
 
 </script>
